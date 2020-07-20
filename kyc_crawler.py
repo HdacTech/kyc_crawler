@@ -205,3 +205,15 @@ def sendMail():
     except:
         conn.rollback()
         raise Exception("KYC status DB update failure {}".format(address))
+
+
+if __name__ == "__main__":
+    # Registering KYC info to DB
+    res = getKYCInfoFromArgosAPI(1)
+    insertKYCInfoToDb(res)
+
+    # Registering KYC info on chain
+    sendKYCInfoOnContract()
+
+    # Send mail
+    sendMail()
