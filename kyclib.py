@@ -1,6 +1,8 @@
 import pymysql
 import traceback
 import time
+import json
+
 import smtplib
 import base64
 from email.mime.multipart import MIMEMultipart
@@ -78,7 +80,7 @@ def sendKYCInfoOnContract():
         host=contract_info['rest_server'],
         privkey=wallet.mnemonic_to_privkey(contract_info['admin_mnemonic'])
     )
-    param = [
+    param = json.dumps([
         {
             "name": "method",
             "value":{
@@ -118,7 +120,7 @@ def sendKYCInfoOnContract():
                 }
             }
         }
-    ]
+    ]).replace(" ", "")
 
     kyc_store_tx_info = tx_obj.execute_contract("hash", contract_info["swap_proxy"], "", param, 0.01)
     kyc_store_tx_hash = kyc_store_tx_info['txhash']
@@ -144,6 +146,17 @@ def sendKYCInfoOnContract():
 
     except:
         conn.rollback()
+
+        query_update = """
+            UPDATE KYC_COMPLETE
+            SET
+                status = 91
+            WHERE
+            address = %s
+        """
+        cursor.execute(query_update, (address, ))
+        conn.commit()
+
         raise Exception("KYC recording contract status update failed {}".format(address))
     
     finally:
@@ -176,7 +189,7 @@ def sendMail():
         msg = MIMEMultipart('alternative')
 
         msg['Subject'] = "Your KYC information has been recorded on chain!"
-        msg['From'] = 'no-reply <no-reply@rizon.world>'
+        msg['From'] = 'test <no-reply@hdac.io>'
         msg['To'] = requester_email
         msg.attach(content)
 
@@ -184,10 +197,19 @@ def sendMail():
         a.ehlo()
         a.starttls()
         a.login(config.MAILER_INFO["sender"], config.MAILER_INFO["password"])
-        a.sendmail("no-reply@rizon.world", requester_email, msg.as_string())
+        a.sendmail("no-reply@hdac.io", requester_email, msg.as_string())
         a.quit()
 
     except:
+        query_update = """
+            UPDATE KYC_COMPLETE
+            SET
+                status = 92
+            WHERE
+            address = %s
+        """
+        cursor.execute(query_update, (address, ))
+        conn.commit()
         raise Exception("Mail alert send failure {}".format(address))
 
     # Mark as complete
@@ -205,15 +227,3 @@ def sendMail():
     except:
         conn.rollback()
         raise Exception("KYC status DB update failure {}".format(address))
-
-
-if __name__ == "__main__":
-    # Registering KYC info to DB
-    res = getKYCInfoFromArgosAPI(1)
-    insertKYCInfoToDb(res)
-
-    # Registering KYC info on chain
-    sendKYCInfoOnContract()
-
-    # Send mail
-    sendMail()

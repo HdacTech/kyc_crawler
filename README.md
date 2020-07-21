@@ -26,7 +26,7 @@ Create `env.json` using `env.example.json` and revise as below:
         "rest_server": "",
         "admin_mnemonic": "",
         "swap_proxy": "",
-        "swap_logic": ""
+        "swap_hash": ""
     },
     "mailer" : {
         "host": "",
@@ -44,7 +44,7 @@ Create `env.json` using `env.example.json` and revise as below:
 `contract_info.rest_server`: Address of rest server of ATOLO blockchain
 `contract_info.admin_mnemonic`: Mnemonic words of admin account
 `contract_info.swap_proxy`: Contract address of `swap_proxy`
-`contract_info.swap_logic`: Contact address of `swap_logic`
+`contract_info.swap_hash`: Contact address of `swap_hash`
 
 `mailer.host`: SMTP server address of a mailer
 `mailer.sender`: Sender account of the SMTP server
@@ -52,4 +52,6 @@ Create `env.json` using `env.example.json` and revise as below:
 
 ### Main scheduler
 
-`python3 ...`
+`python3 kyc_crawler_from_argos.py`: Gather KYC complete information and input to DB
+`python3 kyc_info_save_to_chain.py`: Execute KYC save contract to chain
+`python3 send_mail.py`: Send mail alert to the KYC registerers
