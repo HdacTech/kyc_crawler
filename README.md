@@ -36,22 +36,26 @@ Create `env.json` using `env.example.json` and revise as below:
 }
 ```
 
-`db_info.host`: Host address of AWS RDB
-`db_info.db`: Database name of AWS RDB
-`db_info.user`: Database user
-`db_info.password`: Password of the user
+* `db_info.host`: Host address of AWS RDB
+* `db_info.db`: Database name of AWS RDB
+* `db_info.user`: Database user
+* `db_info.password`: Password of the user
 
-`contract_info.rest_server`: Address of rest server of ATOLO blockchain
-`contract_info.admin_mnemonic`: Mnemonic words of admin account
-`contract_info.swap_proxy`: Contract address of `swap_proxy`
-`contract_info.swap_hash`: Contact address of `swap_hash`
+<br />
 
-`mailer.host`: SMTP server address of a mailer
-`mailer.sender`: Sender account of the SMTP server
-`mailer.password`: Password of the sender account
+* `contract_info.rest_server`: Address of rest server of ATOLO blockchain
+* `contract_info.admin_mnemonic`: Mnemonic words of admin account
+* `contract_info.swap_proxy`: Contract address of `swap_proxy`
+* `contract_info.swap_hash`: Contact address of `swap_hash`
+
+<br />
+
+* `mailer.host`: SMTP server address of a mailer
+* `mailer.sender`: Sender account of the SMTP server
+* `mailer.password`: Password of the sender account
 
 ### Main scheduler
 
-`python3 kyc_crawler_from_argos.py`: Gather KYC complete information and input to DB
-`python3 kyc_info_save_to_chain.py`: Execute KYC save contract to chain
-`python3 send_mail.py`: Send mail alert to the KYC registerers
+* `python3 kyc_crawler_from_argos.py`: Gather KYC complete information and input to DB
+* `python3 kyc_info_save_to_chain.py`: Execute KYC save contract to chain
+* `python3 send_mail.py`: Send mail alert to the KYC registerers
