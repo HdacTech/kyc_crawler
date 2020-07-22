@@ -56,6 +56,5 @@ Create `env.json` using `env.example.json` and revise as below:
 
 ### Main scheduler
 
-* `python3 kyc_crawler_from_argos.py`: Gather KYC complete information and input to DB
 * `python3 kyc_info_save_to_chain.py`: Execute KYC save contract to chain
 * `python3 send_mail.py`: Send mail alert to the KYC registerers

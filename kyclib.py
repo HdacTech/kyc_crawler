@@ -20,21 +20,6 @@ def getConnection():
 def closeConnection(conn):
     conn.close()
 
-def getKYCInfoFromArgosAPI(last_input_id):
-    # Call API, parse response, and return the parsed info
-    res = []
-
-    # TODO: parse code here
-    # The below for loop is just for example
-    for _ in range(1):
-        unit_info = {
-              "address": "friday193lmkelm57nvsrafm4fewjs3s8nq6eduukev7z4kz2ac3h64elqsn9llrc"
-            , "email": "psy2848048@gmail.com"
-            , "kyc_level": 1
-        }
-        res.append(unit_info)
-
-    return res
 
 def insertKYCInfoToDb(kyc_info_list):
     conn = getConnection()
